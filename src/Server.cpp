@@ -17,6 +17,10 @@ cppweb::Server::Server(int port):
     this->port = port;
     this->server_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 
+    int enable = 1;
+    if (setsockopt(this->server_socket_fd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+        perror("setsockopt(SO_REUSEADDR) failed");
+
     if (this->server_socket_fd < 0) {
        perror("ERROR opening socket");
        exit(1);
@@ -45,6 +49,8 @@ cppweb::Server::listen() {
 
     std::cout << "server listenning on port " << port << std::endl;
 
+    HttpRequestFactory requestFactory;
+
     while(1) {
         client_socket_fd = accept(this->server_socket_fd, (struct sockaddr *)&client_address, &client_len);
 
@@ -60,7 +66,8 @@ cppweb::Server::listen() {
             exit(1);
         }
 
-        HttpRequest request = HttpRequestFactory::fromRaw(buffer, this->bufferLength);
+        HttpRequest request = requestFactory.fromRaw(buffer, this->bufferLength);
+        std::cout << methodName(request.method) << " " << request.uri << std::endl;
 
         n = write(client_socket_fd, response, sizeof(response)-1);
 
@@ -69,7 +76,6 @@ cppweb::Server::listen() {
             exit(1);
         }
         close(client_socket_fd);
-        return;
      }
 }
 

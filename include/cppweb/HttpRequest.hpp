@@ -19,10 +19,19 @@ namespace cppweb {
         PATCH
     };
 
+    struct HttpRequestParameters {
+        HttpMethod method;
+        HttpRequestHeadersMap headers;
+        std::string uri;
+    };
+
     class HttpRequest {
     public:
         HttpRequest();
+        HttpRequest(HttpRequestParameters parameters);
         HttpRequest(HttpMethod method, HttpRequestHeadersMap headers);
+        HttpMethod method;
+        std::string uri;
     };
 }
 
