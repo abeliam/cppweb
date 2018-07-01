@@ -2,10 +2,10 @@
 
 #include "cppweb/Server.hpp"
 #include "cppweb/HttpRequestFactory.hpp"
-
-char response[] = "HTTP/1.1 200 OK\r\n"
-"Content-Type: text/html; charset=UTF-8\r\n\r\n"
-"<h1>Hello world!</h1>";
+//
+// char response[] = "HTTP/1.1 200 OK\r\n"
+// "Content-Type: text/html; charset=UTF-8\r\n\r\n"
+// "<h1>Hello world!</h1>";
 
 cppweb::Server::Server():
     cppweb::Server::Server(DEFAULT_PORT) {
@@ -67,9 +67,10 @@ cppweb::Server::listen() {
         }
 
         HttpRequest request = requestFactory.fromRaw(buffer, this->bufferLength);
-        std::cout << methodName(request.method) << " " << request.uri << std::endl;
 
-        n = write(client_socket_fd, response, sizeof(response)-1);
+        HttpResponse response = handle(request);
+
+        response.write(client_socket_fd);
 
         if (n < 0) {
             std::cout << "error" << std::endl;
@@ -77,6 +78,10 @@ cppweb::Server::listen() {
         }
         close(client_socket_fd);
      }
+}
+
+cppweb::HttpResponse cppweb::Server::handle(HttpRequest request) {
+    return HttpResponse::view(VIEW_PATH "./index.html");
 }
 
 cppweb::Server::~Server() {

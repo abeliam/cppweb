@@ -6,7 +6,11 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "cppweb/HttpRequest.hpp"
+#include "cppweb/HttpResponse.hpp"
+
 #define DEFAULT_PORT 8080
+#define VIEW_PATH "../resources/"
 
 namespace cppweb {
     class Server {
@@ -14,6 +18,7 @@ namespace cppweb {
         Server();
         Server(int port);
         void listen();
+        HttpResponse handle(HttpRequest request);
         ~Server();
     private:
         int port;
