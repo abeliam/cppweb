@@ -8,6 +8,7 @@
 
 #include "cppweb/HttpRequest.hpp"
 #include "cppweb/HttpResponse.hpp"
+#include "cppweb/Router.hpp"
 
 #define DEFAULT_PORT 8080
 #define VIEW_PATH "../resources/"
@@ -16,11 +17,12 @@ namespace cppweb {
     class Server {
     public:
         Server();
-        Server(int port);
+        Server(Router& router);
+        Server(int port, Router & router);
         void listen();
         HttpResponse handle(HttpRequest request);
-        ~Server();
     private:
+        Router router;
         int port;
         int bufferLength;
         int server_socket_fd;

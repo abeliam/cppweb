@@ -2,18 +2,19 @@
 
 #include "cppweb/Server.hpp"
 #include "cppweb/HttpRequestFactory.hpp"
-//
-// char response[] = "HTTP/1.1 200 OK\r\n"
-// "Content-Type: text/html; charset=UTF-8\r\n\r\n"
-// "<h1>Hello world!</h1>";
 
-cppweb::Server::Server():
-    cppweb::Server::Server(DEFAULT_PORT) {
+cppweb::Server::Server() {
 
 }
 
-cppweb::Server::Server(int port):
-    bufferLength(8092) {
+cppweb::Server::Server(Router & router):
+    cppweb::Server::Server(DEFAULT_PORT, router) {
+
+}
+
+cppweb::Server::Server(int port, Router & router):
+    bufferLength(8092)
+    {
     this->port = port;
     this->server_socket_fd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -81,9 +82,6 @@ cppweb::Server::listen() {
 }
 
 cppweb::HttpResponse cppweb::Server::handle(HttpRequest request) {
-    return HttpResponse::view(VIEW_PATH "./index.html");
-}
-
-cppweb::Server::~Server() {
-
+    Route * route = router.match(request.uri.erase(0,1));
+    return route->handle(request);
 }
