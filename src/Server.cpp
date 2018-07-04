@@ -68,7 +68,6 @@ cppweb::Server::listen() {
         }
 
         HttpRequest request = requestFactory.fromRaw(buffer, this->bufferLength);
-
         HttpResponse response = handle(request);
 
         response.write(client_socket_fd);
@@ -82,6 +81,12 @@ cppweb::Server::listen() {
 }
 
 cppweb::HttpResponse cppweb::Server::handle(HttpRequest request) {
-    Route * route = router.match(request.uri.erase(0,1));
-    return route->handle(request);
+    // try {
+    //     Route * route = router.match(request.uri.erase(0,1));
+    //     return route->handle(request);
+    // }
+    // catch(char * e) {
+    //     std::cout << e << std::endl;
+    // }
+    return HttpResponse(404, "<h1>Not found</h1> ");
 }

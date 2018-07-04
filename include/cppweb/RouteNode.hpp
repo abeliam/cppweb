@@ -5,16 +5,32 @@
 #include "cppweb/Route.hpp"
 
 namespace cppweb {
-    class RouteNode {
+    class Node {
+    public:
+        Node();
+        Node * child(std::string& path);
+        void addChild(std::string path, Node * node);
+        bool hasChild(std::string path);
+    protected:
+        std::map<std::string , Node *> children;
+    };
+
+
+    class RouteNode : public Node {
     public:
         RouteNode();
         RouteNode(Route * route);
-        RouteNode * child(std::string& path);
-        void addChild(std::string path, RouteNode * node);
-        bool hasChild(std::string path);
         Route * route;
-    private:
-        std::map<std::string , RouteNode *> children;
+    };
+
+    class PathNode : public Node {
+    public:
+        PathNode();
+    };
+
+    class PatternNode : public Node {
+    public:
+        PatternNode();
     };
 }
 

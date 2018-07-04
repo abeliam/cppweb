@@ -14,6 +14,7 @@ namespace cppweb {
         Router();
         Router(RouteCollection routes);
         Route * match(std::string uri);
+        std::string normalize(std::string uri);
     protected:
         RouteTree routes;
     };

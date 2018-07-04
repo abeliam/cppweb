@@ -7,7 +7,7 @@ cppweb::RouteTree::RouteTree() {
 
 cppweb::RouteTree::RouteTree(RouteCollection routes) {
     std::vector<char> buffer;
-    RouteNode * node;
+    Node * node;
     for(auto it  = routes.begin(); it != routes.end(); ++it) {
         node = &root;
         std::string path = it->path;

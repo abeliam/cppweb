@@ -1,26 +1,26 @@
 #include "cppweb/RouteNode.hpp"
 
-cppweb::RouteNode::RouteNode():
+cppweb::Node::Node():
     route(NULL) {
 
 }
 
-cppweb::RouteNode::RouteNode(Route * route):
+cppweb::Node::Node(Route * route):
     route(route) {
 
 }
 
 void
-cppweb::RouteNode::addChild(std::string path, RouteNode * node) {
+cppweb::Node::addChild(std::string path, Node * node) {
     children[path] = node;
 }
 
 bool
-cppweb::RouteNode::hasChild(std::string path) {
+cppweb::Node::hasChild(std::string path) {
     return children.find(path) != children.end();
 }
 
-cppweb::RouteNode *
-cppweb::RouteNode::child(std::string& path) {
+cppweb::Node *
+cppweb::Node::child(std::string& path) {
     return children[path];
 }
